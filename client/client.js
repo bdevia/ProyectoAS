@@ -11,10 +11,10 @@ const rl = readline.createInterface({
 
 // Establecer la información de conexión al servidor SSH
 const sshConfig = {
-  host: '200.14.84.16',
-  port: 8080,
-  username: 'benjamin.devia1',
-  password: 'losdeabajo13'
+  host: 'IP_Bus',
+  port: 'Port',
+  username: 'user',
+  password: 'password'
 };
 
 // Establecer la información de conexión al servidor final
