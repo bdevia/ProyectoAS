@@ -1,0 +1,61 @@
+version: '3.7'
+
+networks:
+  network_arqui:
+    name: 'network_arqui'
+
+services:
+  postgresql:
+    container_name: service_postgres
+    image: 'bitnami/postgresql:14'
+    networks:
+      - network_arqui
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRESQL_USERNAME=user
+      - POSTGRESQL_PASSWORD=2023
+      - POSTGRESQL_DATABASE=proyect
+
+  login:
+    build:
+      context: ./login
+      dockerfile: dockerfile
+    container_name: service_login
+    networks:
+      - network_arqui
+    depends_on:
+      - postgresql
+    
+  personal_medico:
+    build:
+      context: ./PersonalMedico
+      dockerfile: dockerfile
+    container_name: service_personal
+    networks:
+      - network_arqui
+    depends_on:
+      - postgresql
+      - login
+
+  encargado_inventario:
+    build:
+      context: ./EncargadoInventario
+      dockerfile: dockerfile
+    container_name: service_inventario
+    networks:
+      - network_arqui
+    depends_on:
+      - postgresql
+      - login
+
+  users:
+    build:
+      context: ./users
+      dockerfile: dockerfile
+    container_name: service_user
+    networks:
+      - network_arqui
+    depends_on:
+      - postgresql
+      - login
